@@ -26,7 +26,7 @@ class FunctionServicegraphBuilder(FunctionBuilder, RuntimeEntityBuilderServicegr
     ENTITY_SPEC_CLASS = FunctionSpecServicegraph
     ENTITY_SPEC_VALIDATOR = FunctionValidatorServicegraph
     ENTITY_STATUS_CLASS = FunctionStatusServicegraph
-    ENTITY_KIND = EntityKinds.FUNCTION_servicegraph.value
+    ENTITY_KIND = EntityKinds.FUNCTION_SERVICEGRAPH.value
 
     def build(
         self,
