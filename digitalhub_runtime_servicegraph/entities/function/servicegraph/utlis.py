@@ -1,0 +1,162 @@
+# SPDX-FileCopyrightText: © 2025 DSLab - Fondazione Bruno Kessler
+#
+# SPDX-License-Identifier: Apache-2.0
+
+from __future__ import annotations
+
+import typing
+from pathlib import Path
+
+from digitalhub.entities._commons.utils import build_zip_path
+from digitalhub.stores.data.api import get_store
+from digitalhub.utils.exceptions import EntityError
+from digitalhub.utils.file_utils import eval_zip_type, get_file_mime_type
+from digitalhub.utils.generic_utils import create_archive, encode_string, read_source
+from digitalhub.utils.uri_utils import has_local_scheme
+
+from enum import Enum
+
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import Lang
+
+if typing.TYPE_CHECKING:
+    from digitalhub_runtime_python.entities.function.python.entity import FunctionPython
+
+
+def source_check(**kwargs) -> dict:
+    """
+    Check source code.
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword arguments.
+
+    Returns
+    -------
+    dict
+        Checked source.
+    """
+    source: dict = kwargs.pop("source", None)
+    code_src = kwargs.pop("code_src", None)
+    code = kwargs.pop("code", None)
+    base64 = kwargs.pop("base64", None)
+
+    if source is not None:
+        code_src = source.pop("source", None)
+        code = source.pop("code", None)
+        base64 = source.pop("base64", None)
+
+    kwargs["source"] = _check_params(
+        code_src=code_src,
+        code=code,
+        base64=base64,
+    )
+    return kwargs
+
+
+def _check_params(
+    code_src: str | None = None,
+    code: str | None = None,
+    base64: str | None = None,
+) -> dict:
+    """
+    Check source.
+
+    Parameters
+    ----------
+    code_src : str
+        Source code source.
+    code : str
+        Source code.
+    base64 : str
+        Source code base64.
+
+    Returns
+    -------
+    dict
+        Checked source.
+    """
+    source = {}
+
+
+    source["lang"] = Lang.YAML.value
+
+    if code_src is None and code is None and base64 is None:
+        raise EntityError("Source must be provided.")
+
+    if code_src is not None:
+        source["source"] = code_src
+
+    if base64 is not None:
+        source["base64"] = base64
+
+    if code is not None:
+        source["base64"] = encode_string(code)
+
+    return source
+
+
+def eval_yaml_type(source: str) -> bool:
+    """
+    Evaluate whether the source is a YAML file.
+
+    Parameters
+    ----------
+    source : str
+        Source file path.
+
+    Returns
+    -------
+    bool
+        True if the path is a YAML file, False otherwise.
+    """
+    extension = source.endswith(".yaml") or source.endswith(".yml")
+    mime_yaml = get_file_mime_type(source) == "text/yaml"
+    return extension or mime_yaml
+
+
+def source_post_check(exec: FunctionPython) -> FunctionPython:
+    """
+    Post check source.
+
+    Parameters
+    ----------
+    exec : FunctionPython
+        Executable.
+
+    Returns
+    -------
+    FunctionPython
+        Updated executable.
+    """
+    code_src = exec.spec.source.get("source", None)
+    base64 = exec.spec.source.get("base64", None)
+    if code_src is None or base64 is not None:
+        return exec
+
+    # Check local source
+    if has_local_scheme(code_src):
+        path_src = Path(code_src)
+
+        if not path_src.exists():
+            raise EntityError(f"Source {code_src} does not exist.")
+
+        # If source is a folder, zip it and upload it
+        if not path_src.is_file():
+            archive_path = create_archive(path_src)
+            dst = build_zip_path(exec, archive_path.name)
+            get_store(dst).upload(str(archive_path), dst)
+            exec.spec.source["source"] = dst
+            archive_path.unlink()
+
+        # If source is a file, read it and encode it in base64
+        elif eval_yaml_type(code_src):
+            exec.spec.source["base64"] = read_source(code_src)
+
+        # If source is a zip file, upload it and update the source
+        elif eval_zip_type(code_src):
+            dst = build_zip_path(exec, path_src.name)
+            get_store(dst).upload(code_src, dst)
+            exec.spec.source["source"] = dst
+
+    return exec

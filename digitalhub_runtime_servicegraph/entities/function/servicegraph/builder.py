@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from digitalhub.entities.function._base.builder import FunctionBuilder
-from digitalhub_runtime_python.entities.function.python.utils import source_check, source_post_check
 
 from digitalhub_runtime_servicegraph.entities._base.runtime_entity.builder import RuntimeEntityBuilderServicegraph
 from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
@@ -15,6 +14,7 @@ from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import 
     FunctionValidatorServicegraph,
 )
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.status import FunctionStatusServicegraph
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.utlis import source_check, source_post_check
 
 
 class FunctionServicegraphBuilder(FunctionBuilder, RuntimeEntityBuilderServicegraph):

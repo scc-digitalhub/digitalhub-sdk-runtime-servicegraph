@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from digitalhub.entities.function._base.spec import FunctionSpec, FunctionValidator
-from digitalhub_runtime_python.entities.function.python.models import SourceValidator
+
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
 
 
 class FunctionSpecServicegraph(FunctionSpec):
