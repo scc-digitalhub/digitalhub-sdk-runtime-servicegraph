@@ -12,9 +12,9 @@ class EntityKinds(Enum):
     Entity kinds.
     """
 
-    FUNCTION_SERVICEGRAPH = "openinference"
-    TASK_SERVICEGRAPH_SERVE = "openinference+serve"
-    RUN_SERVICEGRAPH_SERVE = "openinference+serve:run"
+    FUNCTION_SERVICEGRAPH = "servicegraph"
+    TASK_SERVICEGRAPH_SERVE = "servicegraph+serve"
+    RUN_SERVICEGRAPH_SERVE = "servicegraph+serve:run"
 
 
 class Actions(Enum):

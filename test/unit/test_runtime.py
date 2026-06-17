@@ -15,17 +15,12 @@ class TestRuntimeServicegraph:
         return RuntimeServicegraph(project="test-project")
 
     def _make_run(self, task_kind: str) -> dict:
-        return {"spec": {"task": f"{task_kind}://projects/p/functions/openinference/fn:v1"}}
-
-    def test_run_raises_not_implemented_for_build(self):
-        runtime = self._make_runtime()
-        with pytest.raises(NotImplementedError, match="build"):
-            runtime.run(self._make_run("openinference+build"))
+        return {"spec": {"task": f"{task_kind}://projects/p/functions/servicegraph/fn:v1"}}
 
     def test_run_raises_not_implemented_for_serve(self):
         runtime = self._make_runtime()
         with pytest.raises(NotImplementedError, match="serve"):
-            runtime.run(self._make_run("openinference+serve"))
+            runtime.run(self._make_run("servicegraph+serve"))
 
     def test_run_raises_not_implemented_for_arbitrary_kind(self):
         runtime = self._make_runtime()
@@ -34,7 +29,7 @@ class TestRuntimeServicegraph:
 
     def test_error_message_contains_task_kind(self):
         runtime = self._make_runtime()
-        task_kind = "openinference+build"
+        task_kind = "servicegraph+serve"
         with pytest.raises(NotImplementedError) as exc_info:
             runtime.run(self._make_run(task_kind))
         assert task_kind in str(exc_info.value)

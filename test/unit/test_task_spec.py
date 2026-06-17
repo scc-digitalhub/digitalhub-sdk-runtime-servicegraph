@@ -11,7 +11,7 @@ from digitalhub_runtime_servicegraph.entities.task.serve.spec import (
     TaskValidatorServicegraphServe,
 )
 
-FUNCTION_REF = "store://projects/my-project/functions/openinference/my-fn:v1"
+FUNCTION_REF = "store://projects/my-project/functions/servicegraph/my-fn:v1"
 
 class TestTaskSpecServicegraphServe:
     """Unit tests for TaskSpecServicegraphServe."""

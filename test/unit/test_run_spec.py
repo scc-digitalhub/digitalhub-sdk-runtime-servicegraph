@@ -8,7 +8,7 @@ from digitalhub_runtime_servicegraph.entities.run._base.spec import (
     RunValidatorServicegraphRun,
 )
 
-TASK_REF = "openinference+serve://projects/my-project/functions/openinference/my-fn:v1"
+TASK_REF = "servicegraph+serve://projects/my-project/functions/servicegraph/my-fn:v1"
 
 
 class TestRunSpecServicegraphRun:

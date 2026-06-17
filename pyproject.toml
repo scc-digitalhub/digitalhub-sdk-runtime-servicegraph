@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "digitalhub-runtime-servicegraph"
-version = "0.15.0b2"
+version = "0.15.1b0"
 description = "Service Graph runtime for DHCore"
 readme = "README.md"
 authors = [
