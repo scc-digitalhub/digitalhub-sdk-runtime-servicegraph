@@ -24,6 +24,7 @@ class RunSpecServicegraphRun(RunSpec):
         image: str | None = None,
         service_type: str | None = None,
         service_name: str | None = None,
+        service_ports: list | None = None,
         replicas: int | None = None,
         parameters: dict | None = None,
         **kwargs,
@@ -43,6 +44,7 @@ class RunSpecServicegraphRun(RunSpec):
         self.image = image
         self.service_type = service_type
         self.service_name = service_name
+        self.service_ports = service_ports
         self.replicas = replicas
         self.parameters = parameters
 
@@ -57,6 +59,7 @@ class RunValidatorServicegraphRun(RunValidator):
     # Task serve
     service_type: str | None = None
     service_name: str | None = None
+    service_ports: list | None = None
     replicas: int | None = None
 
     # Run parameters
