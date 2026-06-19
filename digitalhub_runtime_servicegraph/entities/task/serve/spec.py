@@ -23,6 +23,7 @@ class TaskSpecServicegraphServe(TaskSpecFunction):
         replicas: int | None = None,
         service_type: str | None = None,
         service_name: str | None = None,
+        service_ports: list | None = None,
         **kwargs,
     ) -> None:
         super().__init__(
@@ -37,7 +38,7 @@ class TaskSpecServicegraphServe(TaskSpecFunction):
         self.replicas = replicas
         self.service_type = service_type
         self.service_name = service_name
-
+        self.service_ports = service_ports
 
 class TaskValidatorServicegraphServe(TaskValidatorFunction):
     """
@@ -52,3 +53,6 @@ class TaskValidatorServicegraphServe(TaskValidatorFunction):
 
     service_name: str | None = None
     """Service name."""
+
+    service_ports: list | None = None
+    """Service ports."""

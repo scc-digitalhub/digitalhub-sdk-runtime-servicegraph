@@ -16,10 +16,8 @@ from digitalhub.utils.uri_utils import has_local_scheme
 
 from enum import Enum
 
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import Lang
-
-if typing.TYPE_CHECKING:
-    from digitalhub_runtime_python.entities.function.python.entity import FunctionPython
 
 
 def source_check(**kwargs) -> dict:
@@ -115,18 +113,18 @@ def eval_yaml_type(source: str) -> bool:
     return extension or mime_yaml
 
 
-def source_post_check(exec: FunctionPython) -> FunctionPython:
+def source_post_check(exec: FunctionServicegraph) -> FunctionServicegraph:
     """
     Post check source.
 
     Parameters
     ----------
-    exec : FunctionPython
+    exec : FunctionServicegraph
         Executable.
 
     Returns
     -------
-    FunctionPython
+    FunctionServicegraph
         Updated executable.
     """
     code_src = exec.spec.source.get("source", None)

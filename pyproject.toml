@@ -24,7 +24,6 @@ keywords = ["data", "dataops", "kubernetes"]
 requires-python = ">=3.10, <3.15"
 dependencies = [
 "digitalhub[full]>=0.15.0b, <0.16",
-"digitalhub-runtime-python>=0.15.0b, <0.16",
 "nuclio-sdk",
 "msgpack",
 "pip",
