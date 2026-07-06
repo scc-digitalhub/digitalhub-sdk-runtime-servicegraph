@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import typing
 from pathlib import Path
 
 from digitalhub.entities._commons.utils import build_zip_path
@@ -13,8 +12,6 @@ from digitalhub.utils.exceptions import EntityError
 from digitalhub.utils.file_utils import eval_zip_type, get_file_mime_type
 from digitalhub.utils.generic_utils import create_archive, encode_string, read_source
 from digitalhub.utils.uri_utils import has_local_scheme
-
-from enum import Enum
 
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import Lang
@@ -75,7 +72,6 @@ def _check_params(
         Checked source.
     """
     source = {}
-
 
     source["lang"] = Lang.YAML.value
 

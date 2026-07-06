@@ -40,6 +40,7 @@ class TaskSpecServicegraphServe(TaskSpecFunction):
         self.service_name = service_name
         self.service_ports = service_ports
 
+
 class TaskValidatorServicegraphServe(TaskValidatorFunction):
     """
     TaskValidatorServicegraphServe validator.

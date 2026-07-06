@@ -21,7 +21,6 @@ if typing.TYPE_CHECKING:
 logger = get_logger(__file__)
 
 
-
 class RunServicegraphRun(Run):
     """
     RunServicegraphRun class.
