@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+from typing import ClassVar
+
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import (
     FunctionSpecServicegraph,
     FunctionValidatorServicegraph,
@@ -38,7 +40,7 @@ class TestFunctionSpecServicegraph:
 class TestFunctionValidatorServicegraph:
     """Unit tests for FunctionValidatorServicegraph Pydantic validator."""
 
-    _BASE_VALID = {
+    _BASE_VALID: ClassVar[dict[str, dict[str, str]]] = {
         "source": {"source": "src/handler.yaml"},
     }
 

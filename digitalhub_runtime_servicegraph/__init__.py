@@ -17,4 +17,4 @@ try:
 
     runtime_builders = ((kind, RuntimeServicegraphBuilder) for kind in [e.value for e in EntityKinds])
 except ImportError:
-    runtime_builders = tuple()
+    runtime_builders = ()

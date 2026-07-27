@@ -104,7 +104,7 @@ def eval_yaml_type(source: str) -> bool:
     bool
         True if the path is a YAML file, False otherwise.
     """
-    extension = source.endswith(".yaml") or source.endswith(".yml")
+    extension = source.endswith((".yaml", ".yml"))
     mime_yaml = get_file_mime_type(source) == "text/yaml"
     return extension or mime_yaml
 
