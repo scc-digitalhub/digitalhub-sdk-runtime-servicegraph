@@ -9,6 +9,6 @@ entity_builders = tuple((plugin.kind, plugin.builder) for plugin in entity_plugi
 try:
     from digitalhub_runtime_servicegraph.runtimes.builder import RuntimeServicegraphBuilder
 
-    runtime_builders = tuple((kind, RuntimeServicegraphBuilder) for kind in [e.value for e in EntityKinds])
+    runtime_builders = ((kind, RuntimeServicegraphBuilder) for kind in [e.value for e in EntityKinds])
 except ImportError:
-    runtime_builders = tuple()
+    runtime_builders = ()
