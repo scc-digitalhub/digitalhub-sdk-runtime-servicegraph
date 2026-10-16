@@ -27,7 +27,23 @@ def new_function_servicegraph(
     labels: list[str] | None = None,
     embedded: bool = False,
 ) -> FunctionServicegraph:
-    """Create a servicegraph function entity."""
+    """
+    Create a servicegraph function entity.
+
+    Examples
+    --------
+    Create a servicegraph function from a local source file:
+
+    ```python
+    import digitalhub as dh
+
+    function = dh.new_function_servicegraph(
+        project="my-project",
+        name="service-graph",
+        code_src="./servicegraph.py",
+    )
+    ```
+    """
     if code is not None and code_src is not None:
         raise ValueError("Only one of 'code' or 'code_src' can be provided.")
 
