@@ -1,0 +1,21 @@
+{
+    "id": "servicegraph-function1",
+    "key": "store://demo-etl/function/servicegraph/servicegraph-function1",
+    "kind": "servicegraph",
+    "metadata": {
+        "name": "servicegraph-function1",
+        "project": "demo-etl"
+    },
+    "name": "servicegraph-function1",
+    "project": "demo-etl",
+    "spec": {
+        "source": {
+            "base64": "bm9kZXM6IFtdCg==",
+            "lang": "yaml"
+        }
+    },
+    "status": {
+        "state": "CREATED"
+    },
+    "user": "digitalhubdev"
+}

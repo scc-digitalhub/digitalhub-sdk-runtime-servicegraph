@@ -1,0 +1,48 @@
+{
+    "id": "servicegraph-serve-task1",
+    "key": "store://demo-etl/task/servicegraph+serve/servicegraph-serve-task1",
+    "kind": "servicegraph+serve",
+    "metadata": {
+        "name": "servicegraph-serve-task1",
+        "project": "demo-etl"
+    },
+    "name": "servicegraph-serve-task1",
+    "project": "demo-etl",
+    "spec": {
+        "function": "servicegraph://demo-etl/servicegraph-function1",
+        "volumes": [
+            {
+                "volume_type": "empty_dir",
+                "name": "scratch",
+                "mount_path": "/tmp"
+            }
+        ],
+        "resources": {
+            "cpu": "1",
+            "mem": "1Gi"
+        },
+        "envs": [
+            {
+                "name": "MODE",
+                "value": "serve"
+            }
+        ],
+        "secrets": [
+            "servicegraph-token"
+        ],
+        "profile": "1xa100",
+        "service_type": "NodePort",
+        "service_name": "servicegraph-demo",
+        "service_ports": [
+            {
+                "port": 8080,
+                "target_port": 8080
+            }
+        ],
+        "replicas": 2
+    },
+    "status": {
+        "state": "CREATED"
+    },
+    "user": "digitalhubdev"
+}
