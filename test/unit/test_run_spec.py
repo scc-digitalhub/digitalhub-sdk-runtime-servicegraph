@@ -7,6 +7,7 @@ import pytest
 from digitalhub.entities._constructors.spec import build_spec
 
 from digitalhub_runtime_servicegraph.entities.run._base.spec import RunSpecServicegraphRun
+from digitalhub_runtime_servicegraph.entities.run.serve.spec import RunSpecServicegraphRunServe
 from digitalhub_runtime_servicegraph.entities.task.serve.spec import TaskSpecServicegraphServe
 
 TASK_REF = "servicegraph+serve://projects/my-project/functions/servicegraph/my-fn:v1"
@@ -24,9 +25,6 @@ class TestRunSpecServicegraphRun:
         assert spec.function is None
         assert spec.source is None
         assert spec.image is None
-        assert spec.service_type is None
-        assert spec.service_name is None
-        assert spec.replicas is None
         assert spec.parameters is None
 
     def test_source_set(self):
@@ -39,7 +37,7 @@ class TestRunSpecServicegraphRun:
         assert spec.image == "myimage:1.0"
 
     def test_replicas_set(self):
-        spec = RunSpecServicegraphRun(task=TASK_REF, replicas=5)
+        spec = RunSpecServicegraphRunServe(task=TASK_REF, replicas=5)
         assert spec.replicas == 5
 
     def test_parameters_set(self):
@@ -59,9 +57,6 @@ class TestRunSpecServicegraphRunValidation:
         v = RunSpecServicegraphRun(task=TASK_REF)
         assert v.source is None
         assert v.image is None
-        assert v.service_type is None
-        assert v.service_name is None
-        assert v.replicas is None
         assert v.parameters is None
 
     def test_image_accepted(self):
@@ -69,8 +64,21 @@ class TestRunSpecServicegraphRunValidation:
         assert v.image == "myimage:2.0"
 
     def test_replicas_accepted(self):
-        v = RunSpecServicegraphRun(task=TASK_REF, replicas=3)
+        v = RunSpecServicegraphRunServe(task=TASK_REF, replicas=3)
         assert v.replicas == 3
+
+    def test_serve_fields_are_scoped_to_serve_run(self):
+        run = build_spec(
+            RunSpecServicegraphRunServe,
+            task=TASK_REF,
+            replicas=2,
+            service_type="ClusterIP",
+        )
+        assert run.replicas == 2
+        assert run.service_type == "ClusterIP"
+
+        with pytest.raises(TypeError, match="service_type"):
+            build_spec(RunSpecServicegraphRun, task=TASK_REF, service_type="ClusterIP")
 
     def test_run_parameters_do_not_leak_into_task_specs(self):
         run = build_spec(RunSpecServicegraphRun, task=TASK_REF, parameters={"limit": 10})

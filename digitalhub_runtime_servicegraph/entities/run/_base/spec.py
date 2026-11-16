@@ -12,10 +12,6 @@ class RunSpecServicegraphRun(RunSpec):
 
     source: dict | None = None
     image: str | None = None
-    service_type: str | None = None
-    service_name: str | None = None
-    service_ports: list | None = None
-    replicas: int | None = None
     parameters: dict | None = None
 
 

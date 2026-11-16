@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 from digitalhub_runtime_servicegraph.entities.run._base.spec import RunSpecServicegraphRun
+from digitalhub_runtime_servicegraph.entities.task.serve.spec import ServicegraphServeSpecMixin
 
 
-class RunSpecServicegraphRunServe(RunSpecServicegraphRun):
+class RunSpecServicegraphRunServe(RunSpecServicegraphRun, ServicegraphServeSpecMixin):
     """RunSpecServicegraphRunServe specifications."""
 
 
