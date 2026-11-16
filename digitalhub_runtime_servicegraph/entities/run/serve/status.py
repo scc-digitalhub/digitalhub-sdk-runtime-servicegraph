@@ -6,8 +6,4 @@ from __future__ import annotations
 
 from digitalhub_runtime_servicegraph.entities.run._base.status import RunStatusServicegraphRun
 
-
-class RunStatusServicegraphRunServe(RunStatusServicegraphRun):
-    """
-    RunStatusServicegraphRunServe status.
-    """
+RunStatusServicegraphRunServe = RunStatusServicegraphRun

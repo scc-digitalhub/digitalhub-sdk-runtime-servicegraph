@@ -6,17 +6,16 @@ from __future__ import annotations
 
 import typing
 
+from digitalhub.entities._mixin.source.entity import SourceEntityMixin
 from digitalhub.entities.function._base.entity import Function
-from digitalhub.utils.generic_utils import decode_base64_string
-from digitalhub.utils.io_utils import write_text
-from digitalhub.utils.uri_utils import has_local_scheme
+from digitalhub.utils.file_utils import get_file_mime_type
 
 if typing.TYPE_CHECKING:
     from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
     from digitalhub_runtime_servicegraph.entities.function.servicegraph.status import FunctionStatusServicegraph
 
 
-class FunctionServicegraph(Function):
+class FunctionServicegraph(SourceEntityMixin, Function):
     """
     FunctionServicegraph class.
     """
@@ -27,38 +26,5 @@ class FunctionServicegraph(Function):
         self.spec: FunctionSpecServicegraph
         self.status: FunctionStatusServicegraph
 
-    def export(self) -> str:
-        """
-        Export object as a YAML file in the context folder.
-
-        Returns
-        -------
-        str
-            Exported filepath.
-        """
-        # Strip base64 from source at following conditions:
-        # - source is local path
-        # - base64 is not None
-
-        # Check source
-        source = self.spec.source
-        if source is None:
-            return super().export()
-
-        source_path = source.source
-        if source_path is not None and has_local_scheme(source_path):
-            # Check base64. If it is set, decode it in a local file
-            # save in variable to restore on object after export
-            base64 = source.base64
-            if base64 is not None:
-                # Write local file
-                src_pth = self._context().root / source_path
-                write_text(src_pth, decode_base64_string(base64))
-
-                # Export and restore base64, then return
-                source.base64 = None
-                pth = super().export()
-                source.base64 = base64
-                return pth
-
-        return super().export()
+    def _is_inlineable_source(self, path: str) -> bool:
+        return path.endswith((".yaml", ".yml")) or get_file_mime_type(path) == "text/yaml"

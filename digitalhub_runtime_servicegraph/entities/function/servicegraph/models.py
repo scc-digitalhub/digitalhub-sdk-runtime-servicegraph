@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from enum import Enum
+from typing import ClassVar
 
-from pydantic import BaseModel, ConfigDict, Field
+from digitalhub.entities._mixin.source.models import SourceCode
+from pydantic import Field
 
 
 class Lang(Enum):
@@ -17,21 +19,11 @@ class Lang(Enum):
     YAML = "yaml"
 
 
-class SourceValidator(BaseModel):
-    """
-    Source code params.
-    """
+class ServicegraphSourceCode(SourceCode):
+    """Source code model for Servicegraph functions."""
 
-    model_config = ConfigDict(use_enum_values=True)
-
-    source: str = None
-    "Pointer to source code."
-
-    code: str = None
-    "Source code (plain text)."
-
-    base64: str = None
-    "Source code (base64 encoded)."
-
+    DEFAULT_LANG: ClassVar[str | None] = "yaml"
     lang: Lang = Field(default=Lang.YAML.value)
-    "Source code language (hint)."
+
+
+SourceValidator = ServicegraphSourceCode

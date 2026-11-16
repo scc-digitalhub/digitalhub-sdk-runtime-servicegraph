@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from digitalhub.entities.function._base.spec import FunctionSpec
 
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import ServicegraphSourceCode
 
 
 class FunctionSpecServicegraph(FunctionSpec):
@@ -14,7 +14,7 @@ class FunctionSpecServicegraph(FunctionSpec):
     FunctionSpecServicegraph specifications.
     """
 
-    source: SourceValidator | None = None
+    source: ServicegraphSourceCode | None = None
     image: str | None = None
 
 

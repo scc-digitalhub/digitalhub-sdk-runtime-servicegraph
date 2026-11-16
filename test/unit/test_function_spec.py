@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-from types import SimpleNamespace
-
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.utlis import source_post_check
 
 
 class TestFunctionSpecServicegraph:
@@ -40,7 +39,21 @@ class TestFunctionSpecServicegraph:
             "source": {"lang": "yaml", "source": "src/main.yaml"},
         }
 
-    def test_source_post_check_uses_nested_source_model(self):
-        executable = SimpleNamespace(spec=FunctionSpecServicegraph(source={"source": "s3://bucket/source.yaml"}))
+    def test_post_build_source_check_uses_nested_source_model(self):
+        executable = object.__new__(FunctionServicegraph)
+        executable.spec = FunctionSpecServicegraph(source={"source": "s3://bucket/source.yaml"})
 
-        assert source_post_check(executable) is executable
+        assert executable._post_build_source_check() is executable
+
+    def test_builder_routes_top_level_source_code(self):
+        builder = FunctionServicegraphBuilder()
+
+        function = builder.build(
+            kind=builder.ENTITY_KIND,
+            project="project",
+            name="function",
+            code="services: {}",
+        )
+
+        assert function.spec.source.base64 == "c2VydmljZXM6IHt9"
+        assert function.spec.source.lang == "yaml"
