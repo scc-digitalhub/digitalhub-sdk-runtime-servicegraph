@@ -123,8 +123,12 @@ def source_post_check(exec: FunctionServicegraph) -> FunctionServicegraph:
     FunctionServicegraph
         Updated executable.
     """
-    code_src = exec.spec.source.get("source", None)
-    base64 = exec.spec.source.get("base64", None)
+    source = exec.spec.source
+    if source is None:
+        return exec
+
+    code_src = source.source
+    base64 = source.base64
     if code_src is None or base64 is not None:
         return exec
 
@@ -140,17 +144,17 @@ def source_post_check(exec: FunctionServicegraph) -> FunctionServicegraph:
             archive_path = create_archive(path_src)
             dst = build_zip_path(exec, archive_path.name)
             get_store(dst).upload(str(archive_path), dst)
-            exec.spec.source["source"] = dst
+            source.source = dst
             archive_path.unlink()
 
         # If source is a file, read it and encode it in base64
         elif eval_yaml_type(code_src):
-            exec.spec.source["base64"] = read_source(code_src)
+            source.base64 = read_source(code_src)
 
         # If source is a zip file, upload it and update the source
         elif eval_zip_type(code_src):
             dst = build_zip_path(exec, path_src.name)
             get_store(dst).upload(code_src, dst)
-            exec.spec.source["source"] = dst
+            source.source = dst
 
     return exec

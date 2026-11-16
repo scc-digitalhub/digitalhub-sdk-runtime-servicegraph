@@ -3,16 +3,15 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-from typing import ClassVar
+from types import SimpleNamespace
 
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import (
-    FunctionSpecServicegraph,
-    FunctionValidatorServicegraph,
-)
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.utlis import source_post_check
 
 
 class TestFunctionSpecServicegraph:
-    """Unit tests for FunctionSpecServicegraph constructor and attributes."""
+    """Unit tests for the typed FunctionSpecServicegraph model."""
 
     def test_defaults_to_none(self):
         spec = FunctionSpecServicegraph()
@@ -26,7 +25,8 @@ class TestFunctionSpecServicegraph:
     def test_source_set(self):
         src = {"source": "src/handler.yaml"}
         spec = FunctionSpecServicegraph(source=src)
-        assert spec.source == src
+        assert isinstance(spec.source, SourceValidator)
+        assert spec.source.source == src["source"]
 
     def test_all_params(self):
         spec = FunctionSpecServicegraph(
@@ -34,21 +34,13 @@ class TestFunctionSpecServicegraph:
             image="myimage:1.0",
         )
         assert spec.image == "myimage:1.0"
-        assert spec.source == {"source": "src/main.yaml"}
+        assert spec.source.source == "src/main.yaml"
+        assert spec.to_dict() == {
+            "image": "myimage:1.0",
+            "source": {"lang": "yaml", "source": "src/main.yaml"},
+        }
 
+    def test_source_post_check_uses_nested_source_model(self):
+        executable = SimpleNamespace(spec=FunctionSpecServicegraph(source={"source": "s3://bucket/source.yaml"}))
 
-class TestFunctionValidatorServicegraph:
-    """Unit tests for FunctionValidatorServicegraph Pydantic validator."""
-
-    _BASE_VALID: ClassVar[dict[str, dict[str, str]]] = {
-        "source": {"source": "src/handler.yaml"},
-    }
-
-    def test_optional_fields_default_to_none(self):
-        validator = FunctionValidatorServicegraph(**self._BASE_VALID)
-        assert validator.image is None
-
-    def test_with_image(self):
-        data = {**self._BASE_VALID, "image": "myimage:latest"}
-        validator = FunctionValidatorServicegraph(**data)
-        assert validator.image == "myimage:latest"
+        assert source_post_check(executable) is executable

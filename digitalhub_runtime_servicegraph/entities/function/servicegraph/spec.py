@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from digitalhub.entities.function._base.spec import FunctionSpec, FunctionValidator
+from digitalhub.entities.function._base.spec import FunctionSpec
 
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
 
@@ -14,24 +14,9 @@ class FunctionSpecServicegraph(FunctionSpec):
     FunctionSpecServicegraph specifications.
     """
 
-    def __init__(
-        self,
-        source: dict | None = None,
-        image: str | None = None,
-    ) -> None:
-        super().__init__()
-
-        self.image = image
-        self.source = source
-
-
-class FunctionValidatorServicegraph(FunctionValidator):
-    """
-    FunctionValidatorServicegraph validator.
-    """
-
-    source: SourceValidator
-    """Source code validator"""
-
+    source: SourceValidator | None = None
     image: str | None = None
-    "Image where the function will be executed"
+
+
+class FunctionValidatorServicegraph(FunctionSpecServicegraph):
+    """Compatibility name for the typed Servicegraph function spec."""

@@ -11,7 +11,6 @@ from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import (
     FunctionSpecServicegraph,
-    FunctionValidatorServicegraph,
 )
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.status import FunctionStatusServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.utlis import source_check, source_post_check
@@ -24,7 +23,6 @@ class FunctionServicegraphBuilder(FunctionBuilder, RuntimeEntityBuilderServicegr
 
     ENTITY_CLASS = FunctionServicegraph
     ENTITY_SPEC_CLASS = FunctionSpecServicegraph
-    ENTITY_SPEC_VALIDATOR = FunctionValidatorServicegraph
     ENTITY_STATUS_CLASS = FunctionStatusServicegraph
     ENTITY_KIND = EntityKinds.FUNCTION_SERVICEGRAPH.value
 

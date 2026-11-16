@@ -8,10 +8,10 @@ from pydantic import ValidationError
 
 from digitalhub_runtime_servicegraph.entities.task.serve.spec import (
     TaskSpecServicegraphServe,
-    TaskValidatorServicegraphServe,
 )
 
 FUNCTION_REF = "store://projects/my-project/functions/servicegraph/my-fn:v1"
+
 
 class TestTaskSpecServicegraphServe:
     """Unit tests for TaskSpecServicegraphServe."""
@@ -39,28 +39,28 @@ class TestTaskSpecServicegraphServe:
         assert spec.service_name == "my-svc"
 
 
-class TestTaskValidatorServicegraphServe:
-    """Unit tests for TaskValidatorServicegraphServe Pydantic validator."""
+class TestTaskSpecServicegraphServeValidation:
+    """Unit tests for Servicegraph serve-task validation."""
 
     def test_valid_minimal(self):
-        v = TaskValidatorServicegraphServe(function=FUNCTION_REF)
+        v = TaskSpecServicegraphServe(function=FUNCTION_REF)
         assert v.function == FUNCTION_REF
         assert v.replicas is None
         assert v.service_type is None
         assert v.service_name is None
 
     def test_replicas_accepted(self):
-        v = TaskValidatorServicegraphServe(function=FUNCTION_REF, replicas=2)
+        v = TaskSpecServicegraphServe(function=FUNCTION_REF, replicas=2)
         assert v.replicas == 2
 
     def test_replicas_must_be_at_least_one(self):
         with pytest.raises(ValidationError):
-            TaskValidatorServicegraphServe(function=FUNCTION_REF, replicas=0)
+            TaskSpecServicegraphServe(function=FUNCTION_REF, replicas=0)
 
     def test_negative_replicas_raises(self):
         with pytest.raises(ValidationError):
-            TaskValidatorServicegraphServe(function=FUNCTION_REF, replicas=-1)
+            TaskSpecServicegraphServe(function=FUNCTION_REF, replicas=-1)
 
     def test_service_name_accepted(self):
-        v = TaskValidatorServicegraphServe(function=FUNCTION_REF, service_name="inference-svc")
+        v = TaskSpecServicegraphServe(function=FUNCTION_REF, service_name="inference-svc")
         assert v.service_name == "inference-svc"

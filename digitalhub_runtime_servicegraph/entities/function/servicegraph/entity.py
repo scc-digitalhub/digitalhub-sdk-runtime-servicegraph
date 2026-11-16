@@ -41,19 +41,24 @@ class FunctionServicegraph(Function):
         # - base64 is not None
 
         # Check source
-        source = self.spec.source.get("source")
-        if source is not None and has_local_scheme(source):
+        source = self.spec.source
+        if source is None:
+            return super().export()
+
+        source_path = source.source
+        if source_path is not None and has_local_scheme(source_path):
             # Check base64. If it is set, decode it in a local file
             # save in variable to restore on object after export
-            base64 = self.spec.source.pop("base64", None)
+            base64 = source.base64
             if base64 is not None:
                 # Write local file
-                src_pth = self._context().root / source
+                src_pth = self._context().root / source_path
                 write_text(src_pth, decode_base64_string(base64))
 
                 # Export and restore base64, then return
+                source.base64 = None
                 pth = super().export()
-                self.spec.source["base64"] = base64
+                source.base64 = base64
                 return pth
 
         return super().export()
