@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from digitalhub.entities._base.entity.status import Status
 from digitalhub.entities._mixin.source.builder import SourceBuilderMixin
 from digitalhub.entities.function._base.builder import FunctionBuilder
 
@@ -11,7 +12,6 @@ from digitalhub_runtime_servicegraph.entities._base.runtime_entity.builder impor
 from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.status import FunctionStatusServicegraph
 
 
 class FunctionServicegraphBuilder(SourceBuilderMixin, FunctionBuilder, RuntimeEntityBuilderServicegraph):
@@ -21,5 +21,5 @@ class FunctionServicegraphBuilder(SourceBuilderMixin, FunctionBuilder, RuntimeEn
 
     ENTITY_CLASS = FunctionServicegraph
     ENTITY_SPEC_CLASS = FunctionSpecServicegraph
-    ENTITY_STATUS_CLASS = FunctionStatusServicegraph
+    ENTITY_STATUS_CLASS = Status
     ENTITY_KIND = EntityKinds.FUNCTION_SERVICEGRAPH.value

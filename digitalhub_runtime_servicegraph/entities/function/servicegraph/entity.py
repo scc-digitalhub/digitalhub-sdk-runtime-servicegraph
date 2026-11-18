@@ -11,8 +11,9 @@ from digitalhub.entities.function._base.entity import Function
 from digitalhub.utils.file_utils import get_file_mime_type
 
 if typing.TYPE_CHECKING:
+    from digitalhub.entities._base.entity.status import Status
+
     from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
-    from digitalhub_runtime_servicegraph.entities.function.servicegraph.status import FunctionStatusServicegraph
 
 
 class FunctionServicegraph(SourceEntityMixin, Function):
@@ -24,7 +25,7 @@ class FunctionServicegraph(SourceEntityMixin, Function):
         super().__init__(*args, **kwargs)
 
         self.spec: FunctionSpecServicegraph
-        self.status: FunctionStatusServicegraph
+        self.status: Status
 
     def _is_inlineable_source(self, path: str) -> bool:
         return path.endswith((".yaml", ".yml")) or get_file_mime_type(path) == "text/yaml"

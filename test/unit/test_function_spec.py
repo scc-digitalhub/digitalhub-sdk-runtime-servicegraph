@@ -6,7 +6,14 @@ from __future__ import annotations
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import (
+    FunctionSpecServicegraph,
+    FunctionValidatorServicegraph,
+)
+
+
+def test_function_validator_is_a_spec_alias():
+    assert FunctionValidatorServicegraph is FunctionSpecServicegraph
 
 
 class TestFunctionSpecServicegraph:

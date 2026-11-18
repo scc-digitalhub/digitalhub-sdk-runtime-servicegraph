@@ -38,7 +38,12 @@ class RunServicegraphRun(Run):
         """
         self.refresh()
 
-    def wait(self, log_info: bool = True) -> Run:
+    def wait(
+        self,
+        log_info: bool = True,
+        timeout: float | None = None,
+        poll_interval: float = 5.0,
+    ) -> Run:
         """
         Wait for run to finish.
 
@@ -46,6 +51,10 @@ class RunServicegraphRun(Run):
         ----------
         log_info : bool
             If True, log information.
+        timeout : float | None
+            Maximum wait time in seconds.
+        poll_interval : float
+            Time between status checks in seconds.
 
         Returns
         -------
@@ -84,4 +93,8 @@ class RunServicegraphRun(Run):
 
             return self
 
-        return super().wait(log_info=log_info)
+        return super().wait(
+            log_info=log_info,
+            timeout=timeout,
+            poll_interval=poll_interval,
+        )

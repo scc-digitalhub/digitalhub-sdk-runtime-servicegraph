@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from digitalhub.entities.function._base.spec import FunctionSpec
+from digitalhub.entities._base.entity.spec import Spec
 
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import ServicegraphSourceCode
 
 
-class FunctionSpecServicegraph(FunctionSpec):
+class FunctionSpecServicegraph(Spec):
     """
     FunctionSpecServicegraph specifications.
     """
@@ -18,5 +18,4 @@ class FunctionSpecServicegraph(FunctionSpec):
     image: str | None = None
 
 
-class FunctionValidatorServicegraph(FunctionSpecServicegraph):
-    """Compatibility name for the typed Servicegraph function spec."""
+FunctionValidatorServicegraph = FunctionSpecServicegraph

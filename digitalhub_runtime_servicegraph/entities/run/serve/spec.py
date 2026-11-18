@@ -12,5 +12,4 @@ class RunSpecServicegraphRunServe(RunSpecServicegraphRun, ServicegraphServeSpecM
     """RunSpecServicegraphRunServe specifications."""
 
 
-class RunValidatorServicegraphRunServe(RunSpecServicegraphRunServe):
-    """Compatibility name for the typed Servicegraph serve-run spec."""
+RunValidatorServicegraphRunServe = RunSpecServicegraphRunServe

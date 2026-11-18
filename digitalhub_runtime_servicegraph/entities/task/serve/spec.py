@@ -4,22 +4,18 @@
 
 from __future__ import annotations
 
-from digitalhub.entities._base.entity.spec import Spec
-from digitalhub.entities.task._base.models import CoreServiceType
-from digitalhub.entities.task._base.spec import TaskSpecFunction
+from digitalhub.entities.task._base.spec import ServeSpecMixin, TaskSpecFunction
 from pydantic import Field
 
 
-class ServicegraphServeSpecMixin(Spec):
+class ServicegraphServeSpecMixin(ServeSpecMixin):
+    """Servicegraph-specific compatibility layer for serve fields."""
+
     replicas: int | None = Field(default=None, ge=1)
-    service_type: CoreServiceType | None = None
-    service_name: str | None = None
-    service_ports: list | None = None
 
 
 class TaskSpecServicegraphServe(TaskSpecFunction, ServicegraphServeSpecMixin):
     """TaskSpecServicegraphServe specifications."""
 
 
-class TaskValidatorServicegraphServe(TaskSpecServicegraphServe):
-    """Compatibility name for the typed Servicegraph serve-task spec."""
+TaskValidatorServicegraphServe = TaskSpecServicegraphServe

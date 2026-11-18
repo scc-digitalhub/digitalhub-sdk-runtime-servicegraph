@@ -6,11 +6,32 @@ from __future__ import annotations
 import pytest
 from digitalhub.entities._constructors.spec import build_spec
 
-from digitalhub_runtime_servicegraph.entities.run._base.spec import RunSpecServicegraphRun
-from digitalhub_runtime_servicegraph.entities.run.serve.spec import RunSpecServicegraphRunServe
-from digitalhub_runtime_servicegraph.entities.task.serve.spec import TaskSpecServicegraphServe
+from digitalhub_runtime_servicegraph.entities.run._base.spec import (
+    RunSpecServicegraphRun,
+    RunValidatorServicegraphRun,
+)
+from digitalhub_runtime_servicegraph.entities.run.serve.spec import (
+    RunSpecServicegraphRunServe,
+    RunValidatorServicegraphRunServe,
+)
+from digitalhub_runtime_servicegraph.entities.task.serve.spec import (
+    TaskSpecServicegraphServe,
+    TaskValidatorServicegraphServe,
+)
 
 TASK_REF = "servicegraph+serve://projects/my-project/functions/servicegraph/my-fn:v1"
+
+
+@pytest.mark.parametrize(
+    ("compatibility_name", "spec_class"),
+    [
+        (TaskValidatorServicegraphServe, TaskSpecServicegraphServe),
+        (RunValidatorServicegraphRun, RunSpecServicegraphRun),
+        (RunValidatorServicegraphRunServe, RunSpecServicegraphRunServe),
+    ],
+)
+def test_validator_names_are_spec_aliases(compatibility_name, spec_class):
+    assert compatibility_name is spec_class
 
 
 class TestRunSpecServicegraphRun:

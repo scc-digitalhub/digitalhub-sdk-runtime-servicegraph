@@ -15,5 +15,4 @@ class RunSpecServicegraphRun(RunSpec):
     parameters: dict | None = None
 
 
-class RunValidatorServicegraphRun(RunSpecServicegraphRun):
-    """Compatibility name for the typed Servicegraph run spec."""
+RunValidatorServicegraphRun = RunSpecServicegraphRun
