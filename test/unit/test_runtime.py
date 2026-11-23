@@ -15,7 +15,12 @@ class TestRuntimeServicegraph:
         return RuntimeServicegraph(project="test-project")
 
     def _make_run(self, task_kind: str) -> dict:
-        return {"spec": {"task": f"{task_kind}://projects/p/functions/servicegraph/fn:v1"}}
+        return {
+            "spec": {
+                "function": "servicegraph://projects/p/functions/servicegraph/fn:v1",
+                "task": f"{task_kind}://projects/p/functions/servicegraph/fn:v1",
+            }
+        }
 
     def test_run_raises_not_implemented_for_serve(self):
         runtime = self._make_runtime()

@@ -4,15 +4,12 @@
 
 from __future__ import annotations
 
-from digitalhub.entities.run._base.spec import RunSpec
+from digitalhub.entities.run._base.spec import RunSpecFunction
 
 
-class RunSpecServicegraphRun(RunSpec):
+class RunSpecServicegraphRun(RunSpecFunction):
     """RunSpecServicegraphRun specifications."""
 
     source: dict | None = None
     image: str | None = None
     parameters: dict | None = None
-
-
-RunValidatorServicegraphRun = RunSpecServicegraphRun

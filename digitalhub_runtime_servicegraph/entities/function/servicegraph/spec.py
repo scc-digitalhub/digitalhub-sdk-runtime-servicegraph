@@ -16,6 +16,3 @@ class FunctionSpecServicegraph(Spec):
 
     source: ServicegraphSourceCode | None = None
     image: str | None = None
-
-
-FunctionValidatorServicegraph = FunctionSpecServicegraph

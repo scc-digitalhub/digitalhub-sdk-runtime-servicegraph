@@ -5,15 +5,8 @@ from __future__ import annotations
 
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import SourceValidator
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import (
-    FunctionSpecServicegraph,
-    FunctionValidatorServicegraph,
-)
-
-
-def test_function_validator_is_a_spec_alias():
-    assert FunctionValidatorServicegraph is FunctionSpecServicegraph
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import ServicegraphSourceCode
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
 
 
 class TestFunctionSpecServicegraph:
@@ -31,7 +24,7 @@ class TestFunctionSpecServicegraph:
     def test_source_set(self):
         src = {"source": "src/handler.yaml"}
         spec = FunctionSpecServicegraph(source=src)
-        assert isinstance(spec.source, SourceValidator)
+        assert isinstance(spec.source, ServicegraphSourceCode)
         assert spec.source.source == src["source"]
 
     def test_all_params(self):

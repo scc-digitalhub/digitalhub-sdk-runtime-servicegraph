@@ -24,6 +24,3 @@ class ServicegraphSourceCode(SourceCode):
 
     DEFAULT_LANG: ClassVar[str | None] = "yaml"
     lang: Lang = Field(default=Lang.YAML.value)
-
-
-SourceValidator = ServicegraphSourceCode

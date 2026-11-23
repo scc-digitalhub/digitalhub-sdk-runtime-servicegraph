@@ -4,12 +4,9 @@
 
 from __future__ import annotations
 
+from digitalhub_runtime_servicegraph.entities._mixin.execution.spec import ServicegraphServeSpecMixin
 from digitalhub_runtime_servicegraph.entities.run._base.spec import RunSpecServicegraphRun
-from digitalhub_runtime_servicegraph.entities.task.serve.spec import ServicegraphServeSpecMixin
 
 
 class RunSpecServicegraphRunServe(RunSpecServicegraphRun, ServicegraphServeSpecMixin):
     """RunSpecServicegraphRunServe specifications."""
-
-
-RunValidatorServicegraphRunServe = RunSpecServicegraphRunServe
