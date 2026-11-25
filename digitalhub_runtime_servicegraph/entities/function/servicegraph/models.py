@@ -7,7 +7,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import ClassVar
 
-from digitalhub.entities._mixin.source.models import SourceCode
+from digitalhub.plugins import SourceCode
 from pydantic import Field
 
 

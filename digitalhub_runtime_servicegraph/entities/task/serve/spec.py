@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from digitalhub.entities.task._base.spec import TaskSpecFunction
+from digitalhub.plugins import TaskSpecFunction
 
 from digitalhub_runtime_servicegraph.entities._mixin.execution.spec import ServicegraphServeSpecMixin
 
