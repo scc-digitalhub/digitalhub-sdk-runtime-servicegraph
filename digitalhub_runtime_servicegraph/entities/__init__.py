@@ -2,25 +2,61 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from digitalhub.plugins import CrudPlugin, EntityPlugin
+from digitalhub.plugins import (
+    Action,
+    BuilderDef,
+    CrudPlugin,
+    ExecFamily,
+    FunctionBuilder,
+    RunBuilder,
+    SourceBuilderMixin,
+    Status,
+    TaskBuilder,
+)
 
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
+from digitalhub_runtime_servicegraph.entities._commons.enums import Actions, EntityKinds
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.crud import new_function_servicegraph
-from digitalhub_runtime_servicegraph.entities.run.serve.builder import RunServicegraphRunServeBuilder
-from digitalhub_runtime_servicegraph.entities.task.serve.builder import TaskServicegraphServeBuilder
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
+from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
+from digitalhub_runtime_servicegraph.entities.run._base.status import RunStatusServicegraphRun
+from digitalhub_runtime_servicegraph.entities.run.serve.entity import RunServicegraphRunServe
+from digitalhub_runtime_servicegraph.entities.run.serve.spec import RunSpecServicegraphRunServe
+from digitalhub_runtime_servicegraph.entities.task.serve.entity import TaskServicegraphServe
+from digitalhub_runtime_servicegraph.entities.task.serve.spec import TaskSpecServicegraphServe
 
 # Imported on first use: the entities register even when the runtime cannot be
 # imported, and the import error is reported when a run executes locally.
 RUNTIME_SERVICEGRAPH_BUILDER = "digitalhub_runtime_servicegraph.runtimes.builder:RuntimeServicegraphBuilder"
 
-function_servicegraph_plugin = EntityPlugin(
-    builder=FunctionServicegraphBuilder,
-    shortcuts=(CrudPlugin(new_function_servicegraph),),
+servicegraph = ExecFamily(
+    executable=BuilderDef(
+        EntityKinds.FUNCTION_SERVICEGRAPH,
+        FunctionServicegraph,
+        FunctionSpecServicegraph,
+        Status,
+        base=FunctionBuilder,
+        mixins=(SourceBuilderMixin,),
+        shortcuts=(CrudPlugin(new_function_servicegraph),),
+    ),
+    actions={
+        Actions.SERVE: Action(
+            task=BuilderDef(
+                EntityKinds.TASK_SERVICEGRAPH_SERVE,
+                TaskServicegraphServe,
+                TaskSpecServicegraphServe,
+                Status,
+                base=TaskBuilder,
+            ),
+            run=BuilderDef(
+                EntityKinds.RUN_SERVICEGRAPH_SERVE,
+                RunServicegraphRunServe,
+                RunSpecServicegraphRunServe,
+                RunStatusServicegraphRun,
+                base=RunBuilder,
+            ),
+        ),
+    },
     runtime_builder=RUNTIME_SERVICEGRAPH_BUILDER,
 )
 
-entity_plugins = (
-    function_servicegraph_plugin,
-    EntityPlugin(builder=TaskServicegraphServeBuilder, runtime_builder=RUNTIME_SERVICEGRAPH_BUILDER),
-    EntityPlugin(builder=RunServicegraphRunServeBuilder, runtime_builder=RUNTIME_SERVICEGRAPH_BUILDER),
-)
+entity_plugins = (*servicegraph.plugins(),)

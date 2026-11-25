@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
+from digitalhub.factory.registry import registry
+
+from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.models import ServicegraphSourceCode
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
@@ -46,7 +48,7 @@ class TestFunctionSpecServicegraph:
         assert executable._post_build_source_check() is executable
 
     def test_builder_routes_top_level_source_code(self):
-        builder = FunctionServicegraphBuilder()
+        builder = registry.get_entity_builder(EntityKinds.FUNCTION_SERVICEGRAPH.value)
 
         function = builder.build(
             kind=builder.ENTITY_KIND,

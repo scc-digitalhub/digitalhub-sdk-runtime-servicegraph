@@ -8,7 +8,7 @@ import typing
 
 from digitalhub.entities.function.crud import new_function
 
-from digitalhub_runtime_servicegraph.entities.function.servicegraph.builder import FunctionServicegraphBuilder
+from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
 
 if typing.TYPE_CHECKING:
     from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
@@ -50,7 +50,7 @@ def new_function_servicegraph(
     return new_function(
         project=project,
         name=name,
-        kind=FunctionServicegraphBuilder.ENTITY_KIND,
+        kind=EntityKinds.FUNCTION_SERVICEGRAPH.value,
         uuid=uuid,
         version=version,
         description=description,
