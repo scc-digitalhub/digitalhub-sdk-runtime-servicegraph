@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from digitalhub.plugins import Runtime
+from digitalhub.plugins import EntityRef, Runtime
 
 
 class RuntimeServicegraph(Runtime):
@@ -21,5 +21,5 @@ class RuntimeServicegraph(Runtime):
         dict
             Status of the executed run.
         """
-        task_kind = run["spec"]["task"].split(":")[0]
+        task_kind = EntityRef.parse(run["spec"]["task"]).kind
         raise NotImplementedError(f"Local execution not implemented for task kind: {task_kind}")
