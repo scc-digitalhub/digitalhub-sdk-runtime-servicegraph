@@ -7,6 +7,7 @@ from digitalhub.plugins import (
     BuilderDef,
     CrudPlugin,
     ExecFamily,
+    ExecutableActions,
     FunctionBuilder,
     RunBuilder,
     SourceBuilderMixin,
@@ -15,7 +16,7 @@ from digitalhub.plugins import (
     TaskBuilder,
 )
 
-from digitalhub_runtime_servicegraph.entities._commons.enums import Actions, EntityKinds
+from digitalhub_runtime_servicegraph.entities._commons.enums import EntityKinds
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.crud import new_function_servicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
@@ -39,7 +40,7 @@ servicegraph = ExecFamily(
         shortcuts=(CrudPlugin(new_function_servicegraph),),
     ),
     actions={
-        Actions.SERVE: Action(
+        ExecutableActions.SERVE: Action(
             task=BuilderDef(
                 EntityKinds.TASK_SERVICEGRAPH_SERVE,
                 Task,

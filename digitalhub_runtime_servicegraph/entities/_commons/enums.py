@@ -15,11 +15,3 @@ class EntityKinds(Enum):
     FUNCTION_SERVICEGRAPH = "servicegraph"
     TASK_SERVICEGRAPH_SERVE = "servicegraph+serve"
     RUN_SERVICEGRAPH_SERVE = "servicegraph+serve:run"
-
-
-class Actions(Enum):
-    """
-    Task actions.
-    """
-
-    SERVE = "serve"

@@ -4,23 +4,16 @@
 
 from __future__ import annotations
 
-import time
 import typing
 
-from digitalhub.factory.entity import entity_factory
-from digitalhub.plugins import EntityRef, Run, State
-from digitalhub.utils.logger.logger import get_logger
-
-from digitalhub_runtime_servicegraph.entities._commons.enums import Actions
+from digitalhub.plugins import Run, ServeRunMixin
 
 if typing.TYPE_CHECKING:
     from digitalhub_runtime_servicegraph.entities.run._base.spec import RunSpecServicegraphRun
     from digitalhub_runtime_servicegraph.entities.run._base.status import RunStatusServicegraphRun
 
-logger = get_logger(__file__)
 
-
-class RunServicegraphRun(Run):
+class RunServicegraphRun(ServeRunMixin, Run):
     """
     RunServicegraphRun class.
     """
@@ -36,64 +29,3 @@ class RunServicegraphRun(Run):
         Setup run execution.
         """
         self.refresh()
-
-    def wait(
-        self,
-        log_info: bool = True,
-        timeout: float | None = None,
-        poll_interval: float = 5.0,
-    ) -> Run:
-        """
-        Wait for run to finish.
-
-        Parameters
-        ----------
-        log_info : bool
-            If True, log information.
-        timeout : float | None
-            Maximum wait time in seconds.
-        poll_interval : float
-            Time between status checks in seconds.
-
-        Returns
-        -------
-        Run
-            Run object.
-        """
-        task_kind = EntityRef.parse(self.spec.task).kind
-        action = entity_factory.get_action_from_task_kind(self.kind, task_kind)
-
-        if action == Actions.SERVE.value:
-            serve_timeout = 300
-            start = time.time()
-
-            while time.time() - start < serve_timeout:
-                if log_info:
-                    logger.info(f"Waiting for run {self.id} to deploy service.")
-
-                self.refresh()
-                if self.status.service is not None:
-                    if log_info:
-                        msg = f"Run {self.id} service deployed."
-                        logger.info(msg)
-                    return self
-
-                elif self.status.state == State.ERROR.value:
-                    if log_info:
-                        msg = f"Run {self.id} serving failed."
-                        logger.info(msg)
-                    return self
-
-                time.sleep(5)
-
-            if log_info:
-                msg = f"Waiting for run {self.id} service timed out. Check logs for more information."
-                logger.info(msg)
-
-            return self
-
-        return super().wait(
-            log_info=log_info,
-            timeout=timeout,
-            poll_interval=poll_interval,
-        )
