@@ -11,6 +11,7 @@ from digitalhub.plugins import (
     RunBuilder,
     SourceBuilderMixin,
     Status,
+    Task,
     TaskBuilder,
 )
 
@@ -18,10 +19,9 @@ from digitalhub_runtime_servicegraph.entities._commons.enums import Actions, Ent
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.crud import new_function_servicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.entity import FunctionServicegraph
 from digitalhub_runtime_servicegraph.entities.function.servicegraph.spec import FunctionSpecServicegraph
+from digitalhub_runtime_servicegraph.entities.run._base.entity import RunServicegraphRun
 from digitalhub_runtime_servicegraph.entities.run._base.status import RunStatusServicegraphRun
-from digitalhub_runtime_servicegraph.entities.run.serve.entity import RunServicegraphRunServe
 from digitalhub_runtime_servicegraph.entities.run.serve.spec import RunSpecServicegraphRunServe
-from digitalhub_runtime_servicegraph.entities.task.serve.entity import TaskServicegraphServe
 from digitalhub_runtime_servicegraph.entities.task.serve.spec import TaskSpecServicegraphServe
 
 # Imported on first use: the entities register even when the runtime cannot be
@@ -42,14 +42,14 @@ servicegraph = ExecFamily(
         Actions.SERVE: Action(
             task=BuilderDef(
                 EntityKinds.TASK_SERVICEGRAPH_SERVE,
-                TaskServicegraphServe,
+                Task,
                 TaskSpecServicegraphServe,
                 Status,
                 base=TaskBuilder,
             ),
             run=BuilderDef(
                 EntityKinds.RUN_SERVICEGRAPH_SERVE,
-                RunServicegraphRunServe,
+                RunServicegraphRun,
                 RunSpecServicegraphRunServe,
                 RunStatusServicegraphRun,
                 base=RunBuilder,
